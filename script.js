@@ -13,6 +13,52 @@
 //     setTimeout(()=>s.remove(),3000);
 // },600);
 
+/* =========================
+   LOADER + PAPÁ NOEL
+========================= */
+
+const santaContainer = document.getElementById("santa-container");
+let santaInterval = null;
+
+function createSanta() {
+    const santa = document.createElement("img");
+    santa.src = "papanoel.png";
+    santa.className = "santa-fly";
+
+    const startY = Math.random() * 80 + 10;
+    const endY = startY + (Math.random() * 40 - 20);
+
+    santa.style.setProperty("--start-y", startY + "vh");
+    santa.style.setProperty("--end-y", endY + "vh");
+    santa.style.animationDuration = Math.random() * 3 + 4 + "s";
+
+    santaContainer.appendChild(santa);
+
+    setTimeout(() => santa.remove(), 20000);
+}
+
+/* AL CARGAR LA PÁGINA */
+window.addEventListener("load", () => {
+
+    // Papá Noel aparece mientras carga
+    santaInterval = setInterval(createSanta, 100);
+
+    // Duración del loader
+    setTimeout(() => {
+        const loader = document.getElementById("loader");
+
+        // parar Papá Noel
+        clearInterval(santaInterval);
+
+        // ocultar loader
+        loader.classList.add("hidden");
+
+        // eliminarlo del DOM tras la animación
+        setTimeout(() => loader.remove(), 700);
+
+    }, 2500); // ⏱️ 2 segundos
+});
+
 /* MUSICA*/
 document.body.addEventListener("click", () => {
     document.getElementById("musica").play();
