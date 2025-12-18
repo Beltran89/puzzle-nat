@@ -153,49 +153,128 @@ function startMemory(){
     });
 }
 
-/* FASE 3 · PUZLE */
+// /* FASE 3 · PUZLE */
 function startPuzzle(){
-    walking=false;
-    const puzzle=document.getElementById("popup-puzzle");
+    
+
+    // 🛑 parar huellas
+    walking = false;
+
+    const puzzle = document.getElementById("popup-puzzle");
     puzzle.classList.remove("hidden");
 
-    let selected=null, correct=0;
+    let correct = 0;
+    let dragging = null;
+    let startX = 0;
+    let startY = 0;
+    let offsetX = 0;
+    let offsetY = 0;
 
-    document.querySelectorAll(".piece").forEach(p=>{
-        p.onclick=()=>{
-            document.querySelectorAll(".piece").forEach(x=>x.classList.remove("selected"));
-            selected=p; p.classList.add("selected");
-        };
-    });
+    const pieces = puzzle.querySelectorAll(".piece");
+    const slots = puzzle.querySelectorAll(".slot");
 
-    document.querySelectorAll(".slot").forEach(s=>{
-        s.onclick=()=>{
-            if(!selected) return;
-            if(selected.dataset.pos===s.dataset.pos&&!s.classList.contains("filled")){
-                s.appendChild(selected);
-                selected.classList.remove("selected");
-                s.classList.add("filled");
+    pieces.forEach(piece => {
+
+        piece.addEventListener("pointerdown", e => {
+    dragging = piece;
+    piece.classList.add("dragging");
+
+    const rect = piece.getBoundingClientRect();
+    startX = rect.left;
+    startY = rect.top;
+
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    // 👻 crear copia visual
+    ghost = piece.cloneNode(true);
+    ghost.style.position = "fixed";
+    ghost.style.left = rect.left + "px";
+    ghost.style.top = rect.top + "px";
+    ghost.style.width = rect.width + "px";
+    ghost.style.height = rect.height + "px";
+    ghost.style.pointerEvents = "none";
+    ghost.classList.add("dragging");
+
+    document.body.appendChild(ghost);
+
+    // ocultamos la original
+    piece.style.visibility = "hidden";
+
+    piece.setPointerCapture(e.pointerId);
+});
+
+        piece.addEventListener("pointermove", e => {
+    if (!ghost) return;
+
+    ghost.style.left = e.clientX - offsetX + "px";
+    ghost.style.top = e.clientY - offsetY + "px";
+});
+
+        piece.addEventListener("pointerup", e => {
+    if (!dragging || !ghost) return;
+
+    piece.releasePointerCapture(e.pointerId);
+    piece.classList.remove("dragging");
+
+    const ghostRect = ghost.getBoundingClientRect();
+    let placed = false;
+
+    slots.forEach(slot => {
+        if (slot.classList.contains("filled")) return;
+
+        const slotRect = slot.getBoundingClientRect();
+        const near =
+            Math.abs(ghostRect.left - slotRect.left) < 50 &&
+            Math.abs(ghostRect.top - slotRect.top) < 50;
+
+        if (near && piece.dataset.pos === slot.dataset.pos) {
+            // animar encaje
+            ghost.style.transition = "all 0.25s ease";
+            ghost.style.left = slotRect.left + "px";
+            ghost.style.top = slotRect.top + "px";
+
+            setTimeout(() => {
+                slot.appendChild(piece);
+                piece.style.visibility = "";
+                slot.classList.add("filled");
+
+                ghost.remove();
+                ghost = null;
+
                 correct++;
-                selected=null;
-               if (correct === 4) {
 
-    // 1️⃣ dejamos el puzle visible 2 segundos
-    setTimeout(() => {
+                if (correct === pieces.length) {
+                    setTimeout(() => {
+                        document.getElementById("popup-success").classList.remove("hidden");
 
-        // 2️⃣ mostramos "Correcto ❤️"
-        const success = document.getElementById("popup-success");
-        success.classList.remove("hidden");
+                        setTimeout(() => {
+                            document.getElementById("popup-success").classList.add("hidden");
+                            puzzle.classList.add("hidden");
+                            document.getElementById("popup-final").classList.remove("hidden");
+                        }, 1500);
+                    }, 2000);
+                }
+            }, 250);
 
-        // 3️⃣ después de un momento, cerramos el puzle y seguimos
-        setTimeout(() => {
-            success.classList.add("hidden");
-            puzzle.classList.add("hidden");
-            document.getElementById("popup-final").classList.remove("hidden");
-        }, 1000);
-
-    }, 1500); // ⏱️ AQUÍ están los 2 segundos con el puzle visible
-}
-            }
-        };
+            placed = true;
+        }
     });
+
+    if (!placed) {
+        ghost.style.transition = "all 0.25s ease";
+        ghost.style.left = startX + "px";
+        ghost.style.top = startY + "px";
+
+        setTimeout(() => {
+            piece.style.visibility = "";
+            ghost.remove();
+            ghost = null;
+        }, 250);
+    }
+
+    dragging = null;
+});
+    });
+
 }
