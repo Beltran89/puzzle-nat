@@ -38,6 +38,7 @@ body{
 }
 
 /* POPUPS */
+
 .popup{
     position:fixed;
     bottom:0;
@@ -54,6 +55,35 @@ body{
     flex-direction: column;
     gap: 12px;
 }
+/* POPUP FINAL AJUSTADO PARA TEXTO LARGO */
+#popup-final{
+    max-width: 700px;        /* 🔑 evita líneas infinitas */
+    width: calc(100% - 20px);
+    margin: 0 auto;
+    max-height: 80vh;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* CONTENIDO DEL TEXTO */
+#popup-final .popup-content{
+    overflow-y: auto;
+    text-align: center;
+}
+
+/* TEXTO */
+#popup-final p{
+    line-height: 1.5;
+    white-space: normal;     /* 🔑 permite saltos */
+    word-break: break-word; /* 🔑 evita desbordes */
+}
+
+/* BOTÓN FIJO ABAJO */
+#popup-final button{
+    margin-top: auto;        /* 🔑 empuja el botón abajo */
+}
 .puzzle-grid{
     flex: 1;
 }
@@ -61,7 +91,9 @@ body{
 .pieces{
     flex: 1;
 }
-.hidden{ display:none; }
+.hidden{
+    display: none !important;
+}
 
 .popup button{
     width:100%;
@@ -133,3 +165,24 @@ body{
     grid-auto-rows: min-content;
 }
 .piece.selected{ outline:3px solid #333; }
+
+/* Nieve */
+#snow-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    color: white;
+    user-select: none;
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}

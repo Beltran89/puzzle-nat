@@ -10,6 +10,10 @@
 
 <!-- HUELLAS -->
 <div id="footsteps"></div>
+<div id="snow-container"></div>
+<audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
 
 <!-- FASE 1 · QUIZ -->
 <div id="popup-quiz" class="popup hidden">
@@ -58,11 +62,13 @@
 <!-- FINAL -->
 <div id="popup-final" class="popup hidden">
   <h2>Porque cada paso que des, quiero que sea junto a mí 💕</h2>
-  <p>Sé que te gustaron mucho las zapatillas de la camarera. No he podido encontrarlas, pero me encantaría que eligieras las que más te gusten,
+
+  <div class="popup-content">
+   <p>Sé que te gustaron mucho las zapatillas de la camarera. No he podido encontrarlas, pero me encantaría que eligieras las que más te gusten,
   <strong>para que cada paso que des sea tan bonito como tú ❤️ </strong></p>
-  <button onclick="window.location.href='https://www.skechers.es'">
-    Continuar
-  </button>
+  </div>
+
+  <button onclick="window.location.href='https://www.skechers.es'">Continuar</button>
 </div>
 
 <script src="script.js"></script>

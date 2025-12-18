@@ -1,17 +1,48 @@
 /* HUELLAS */
-const footsteps=document.getElementById("footsteps");
-let walking=true;
+// const footsteps=document.getElementById("footsteps");
+// let walking=true;
 
-setInterval(()=>{
-    if(!walking) return;
-    const s=document.createElement("div");
-    s.className="step";
-    s.textContent="👣";
-    s.style.left=Math.random()*80+10+"vw";
-    s.style.bottom="-20px";
-    footsteps.appendChild(s);
-    setTimeout(()=>s.remove(),3000);
-},600);
+// setInterval(()=>{
+//     if(!walking) return;
+//     const s=document.createElement("div");
+//     s.className="step";
+//     s.textContent="👣";
+//     s.style.left=Math.random()*80+10+"vw";
+//     s.style.bottom="-20px";
+//     footsteps.appendChild(s);
+//     setTimeout(()=>s.remove(),3000);
+// },600);
+
+/* MUSICA*/
+document.body.addEventListener("click", () => {
+    document.getElementById("musica").play();
+}, { once: true });
+
+
+/* PRUEBA*/
+const snowContainer = document.getElementById("snow-container");
+
+function createSnowflake() {
+    const snowflake = document.createElement("div");
+    snowflake.classList.add("snowflake");
+    snowflake.innerHTML = "❄";
+
+    snowflake.style.left = Math.random() * 100 + "vw";
+    snowflake.style.fontSize = Math.random() * 14 + 10 + "px";
+    snowflake.style.animationDuration = Math.random() * 6 + 6 + "s";
+    snowflake.style.opacity = Math.random();
+
+    snowContainer.appendChild(snowflake);
+
+    setTimeout(() => snowflake.remove(), 12000);
+}
+
+setInterval(createSnowflake, 180);
+
+
+
+
+
 
 /* FASE 1 · QUIZ */
 const quiz=document.getElementById("popup-quiz");
@@ -20,14 +51,14 @@ const quizMsg=document.getElementById("quiz-msg");
 setTimeout(()=>{
     walking=false;
     quiz.classList.remove("hidden");
-},4000);
+},500);
 
 quiz.querySelectorAll("button").forEach(b=>{
     b.onclick=()=>{
         if(b.dataset.ok==="true"){
             quiz.classList.add("hidden");
             walking=true;
-            setTimeout(()=>startMemory(),2500);
+            setTimeout(()=>startMemory(),300);
         }else{
             quizMsg.textContent="Casi 😜";
             navigator.vibrate?.(80);
@@ -63,7 +94,7 @@ function startMemory(){
                 if(matched===4){
                     popup.classList.add("hidden");
                     walking=true;
-                    setTimeout(()=>startPuzzle(),2500);
+                    setTimeout(()=>startPuzzle(),300);
                 }
             }else{
                 setTimeout(()=>{
