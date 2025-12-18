@@ -131,14 +131,24 @@ function startPuzzle(){
                 s.classList.add("filled");
                 correct++;
                 selected=null;
-                if(correct===4){
-                    puzzle.classList.add("hidden");
-                    document.getElementById("popup-success").classList.remove("hidden");
-                    setTimeout(()=>{
-                        document.getElementById("popup-success").classList.add("hidden");
-                        document.getElementById("popup-final").classList.remove("hidden");
-                    },1500);
-                }
+               if (correct === 4) {
+
+    // 1️⃣ dejamos el puzle visible 2 segundos
+    setTimeout(() => {
+
+        // 2️⃣ mostramos "Correcto ❤️"
+        const success = document.getElementById("popup-success");
+        success.classList.remove("hidden");
+
+        // 3️⃣ después de un momento, cerramos el puzle y seguimos
+        setTimeout(() => {
+            success.classList.add("hidden");
+            puzzle.classList.add("hidden");
+            document.getElementById("popup-final").classList.remove("hidden");
+        }, 1000);
+
+    }, 1500); // ⏱️ AQUÍ están los 2 segundos con el puzle visible
+}
             }
         };
     });
