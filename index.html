@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Caminar juntos 👣</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HUELLAS -->
+<div id="footsteps"></div>
+
+<!-- FASE 1 · QUIZ -->
+<div id="popup-quiz" class="popup hidden">
+  <h2>¿Cómo va la vida?</h2>
+  <button data-ok="false">bien</button>
+  <button data-ok="false">genial</button>
+  <button data-ok="true">como dios</button>
+  <p id="quiz-msg"></p>
+</div>
+
+<!-- FASE 2 · MEMORY -->
+<div id="popup-memory" class="popup popup-half hidden">
+  <h2>Encuentra la pareja</h2>
+  <div class="memory-grid">
+    <div class="card" data-img="img1.jpg"></div>
+    <div class="card" data-img="img2.jpg"></div>
+    <div class="card" data-img="img1.jpg"></div>
+    <div class="card" data-img="img2.jpg"></div>
+  </div>
+</div>
+
+<!-- FASE 3 · PUZLE -->
+<div id="popup-puzzle" class="popup popup-half hidden">
+  <h2>Completa el recuerdo</h2>
+  <!-- <h2>Arrastra y completa el puzzle</h2> -->
+  <div class="puzzle-grid">
+    <div class="slot" data-pos="1"></div>
+    <div class="slot" data-pos="2"></div>
+    <div class="slot" data-pos="3"></div>
+    <div class="slot" data-pos="4"></div>
+  </div>
+
+  <div class="pieces">
+    <div class="piece" data-pos="3" style="background-position:0% 100%"></div>
+    <div class="piece" data-pos="1" style="background-position:0% 0%"></div>
+    <div class="piece" data-pos="4" style="background-position:100% 100%"></div>
+    <div class="piece" data-pos="2" style="background-position:100% 0%"></div>
+  </div>
+</div>
+
+<!-- POPUP ÉXITO PUZLE -->
+<div id="popup-success" class="popup hidden">
+  <h2>Perfecto ❤️</h2>
+</div>
+
+<!-- FINAL -->
+<div id="popup-final" class="popup hidden">
+  <h2>Para que caminemos juntos</h2>
+  <p>La camarera</p>
+  <button onclick="window.location.href='https://www.skechers.es'">
+    Continuar
+  </button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

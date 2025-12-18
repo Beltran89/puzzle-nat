@@ -1,0 +1,114 @@
+/* HUELLAS */
+const footsteps=document.getElementById("footsteps");
+let walking=true;
+
+setInterval(()=>{
+    if(!walking) return;
+    const s=document.createElement("div");
+    s.className="step";
+    s.textContent="👣";
+    s.style.left=Math.random()*80+10+"vw";
+    s.style.bottom="-20px";
+    footsteps.appendChild(s);
+    setTimeout(()=>s.remove(),3000);
+},600);
+
+/* FASE 1 · QUIZ */
+const quiz=document.getElementById("popup-quiz");
+const quizMsg=document.getElementById("quiz-msg");
+
+setTimeout(()=>{
+    walking=false;
+    quiz.classList.remove("hidden");
+},4000);
+
+quiz.querySelectorAll("button").forEach(b=>{
+    b.onclick=()=>{
+        if(b.dataset.ok==="true"){
+            quiz.classList.add("hidden");
+            walking=true;
+            setTimeout(()=>startMemory(),2500);
+        }else{
+            quizMsg.textContent="Casi 😜";
+            navigator.vibrate?.(80);
+        }
+    }
+});
+
+/* FASE 2 · MEMORY */
+function startMemory(){
+    walking=false;
+    const popup=document.getElementById("popup-memory");
+    popup.classList.remove("hidden");
+
+    const cards=document.querySelectorAll(".card");
+    let first=null, lock=false, matched=0;
+
+    cards.forEach(card=>{
+        const inner=document.createElement("div");
+        inner.className="card-inner";
+        inner.innerHTML=`
+          <div class="card-face card-back">🎨</div>
+          <div class="card-face card-front" style="background-image:url('${card.dataset.img}')"></div>
+        `;
+        card.appendChild(inner);
+
+        card.onclick=()=>{
+            if(lock||card.classList.contains("flipped")) return;
+            card.classList.add("flipped");
+            if(!first){ first=card; return; }
+            lock=true;
+            if(first.dataset.img===card.dataset.img){
+                matched+=2; first=null; lock=false;
+                if(matched===4){
+                    popup.classList.add("hidden");
+                    walking=true;
+                    setTimeout(()=>startPuzzle(),2500);
+                }
+            }else{
+                setTimeout(()=>{
+                    first.classList.remove("flipped");
+                    card.classList.remove("flipped");
+                    first=null; lock=false;
+                },900);
+            }
+        };
+    });
+}
+
+/* FASE 3 · PUZLE */
+function startPuzzle(){
+    walking=false;
+    const puzzle=document.getElementById("popup-puzzle");
+    puzzle.classList.remove("hidden");
+
+    let selected=null, correct=0;
+
+    document.querySelectorAll(".piece").forEach(p=>{
+        p.onclick=()=>{
+            document.querySelectorAll(".piece").forEach(x=>x.classList.remove("selected"));
+            selected=p; p.classList.add("selected");
+        };
+    });
+
+    document.querySelectorAll(".slot").forEach(s=>{
+        s.onclick=()=>{
+            if(!selected) return;
+            if(selected.dataset.pos===s.dataset.pos&&!s.classList.contains("filled")){
+                s.appendChild(selected);
+                selected.classList.remove("selected");
+                s.classList.add("filled");
+                correct++;
+                selected=null;
+                if(correct===4){
+                    puzzle.classList.add("hidden");
+                    document.getElementById("popup-success").classList.remove("hidden");
+                    setTimeout(()=>{
+                        document.getElementById("popup-success").classList.add("hidden");
+                        document.getElementById("popup-final").classList.remove("hidden");
+                    },1500);
+                }
+            }
+        };
+    });
+}
