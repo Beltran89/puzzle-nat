@@ -147,7 +147,7 @@ body::before{
 }
 
 .popup-half{
-    height: 60vh;
+    height: 80vh;              /* 🔑 MÁS ALTO */
     display: flex;
     flex-direction: column;
     gap: 12px;
